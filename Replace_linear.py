@@ -35,5 +35,10 @@ def replace_linear_with_target(module: nn.Module, target_class: nn.Module, modul
             child.weight.dtype,
         )
         setattr(module, name, new_module)
+        getattr(module, name).quantize(old_weight)
         if old_bias is not None:
             getattr(module, name).bias = old_bias
+        else:
+            # Recursively call the function for nested modules
+            replace_linear_with_target(child, 
+                     target_class, module_name_to_exclude)
