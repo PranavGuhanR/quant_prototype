@@ -28,6 +28,7 @@ def replace_linear_with_target(module: nn.Module, target_class: nn.Module, modul
     module_name_to_exclude = set(module_name_to_exclude)
     for name, child in module.named_children():
         old_bias = child.bias
+        old_weight = child.weight
         new_module = target_class(
             child.in_features,
             child.out_features,
